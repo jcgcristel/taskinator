@@ -1,8 +1,12 @@
 // variables
 var formEl = document.querySelector("#task-form");
-var taskToDoEl = document.querySelector("#tasks-to-do");
-var taskIDCounter = 0;
 var pageContentEl = document.querySelector("#page-content");
+
+var taskToDoEl = document.querySelector("#tasks-to-do");
+var taskInProgressEl = document.querySelector("#tasks-in-progress");
+var taskCompletedEl = document.querySelector("#tasks-completed");
+
+var taskIDCounter = 0;
 
 // create task
 var createTaskEl = function(taskDataObj) {
@@ -185,7 +189,34 @@ var deleteTask = function(taskID) {
     taskSelected.remove();
 }
 
+// changing status of a task
+var taskStatusChangeHandler = function(event) {
+    // get target element
+    var targetEl = event.target;
+
+    // get id of task
+    var taskID = targetEl.getAttribute("task-id");
+
+    // convert selected option to lowercase
+    var statusValue = targetEl.value.toLowerCase();
+
+    // find parent task item based on id
+    var taskSelected = document.querySelector(`.task-item[task-id="${taskID}"]`);
+
+    switch (statusValue) {
+        case "to do":
+            taskToDoEl.appendChild(taskSelected);
+            break;
+        case "in progress":
+            taskInProgressEl.appendChild(taskSelected);
+            break;
+        case "completed":
+            taskCompletedEl.appendChild(taskSelected);
+            break;
+    }
+}
 
 // listeners
 formEl.addEventListener("submit", taskFormHandler);
 pageContentEl.addEventListener("click", taskButtonHandler);
+pageContentEl.addEventListener("change", taskStatusChangeHandler)
