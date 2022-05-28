@@ -8,6 +8,8 @@ var taskCompletedEl = document.querySelector("#tasks-completed");
 
 var taskIDCounter = 0;
 
+var tasks = [];
+
 // create task
 var createTaskEl = function(taskDataObj) {
       // create task item
@@ -118,8 +120,13 @@ var taskFormHandler = function() {
         // package data as an obj
         var taskDataObj = {
             name: taskNameInput,
-            type: taskTypeInput
+            type: taskTypeInput,
+            status: "to do",
+            id: taskIDCounter
         }
+        
+        // appends item to tasks array
+        tasks.push(taskDataObj);        
         
         createTaskEl(taskDataObj);
     }
@@ -176,6 +183,14 @@ var completeEditTask = function(taskName, taskType, taskID) {
     taskSelected.querySelector("h3.task-name").textContent = taskName;
     taskSelected.querySelector("span.task-type").textContent = taskType;
 
+    // loop through task array
+    for (var i = 0; i < tasks.length; i++) {
+        if (task[i].id === parseInt(taskID)) {
+            tasks[i].name = taskName;
+            tasks[i].type = taskType;
+        }
+    }
+
     alert("Task updated.");
 
     // turn off edit mode
@@ -187,6 +202,18 @@ var completeEditTask = function(taskName, taskType, taskID) {
 var deleteTask = function(taskID) {
     var taskSelected = document.querySelector(`.task-item[task-id="${taskID}"]`)
     taskSelected.remove();
+
+    // hold value of task
+    var updatedTaskArr = [];
+    
+    // loop through current tasks
+    for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i].id !== parseInt(taskID)) {
+            updatedTaskArr.push(tasks[i]);
+        }
+    }
+
+    tasks = updatedTaskArr;
 }
 
 // changing status of a task
@@ -214,9 +241,18 @@ var taskStatusChangeHandler = function(event) {
             taskCompletedEl.appendChild(taskSelected);
             break;
     }
+
+    // update tasks in tasks array
+    for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i].id === parseInt(taskID)) {
+            tasks[i].status = statusValue;
+        }
+    }
+
+    console.log(tasks);
 }
 
 // listeners
 formEl.addEventListener("submit", taskFormHandler);
 pageContentEl.addEventListener("click", taskButtonHandler);
-pageContentEl.addEventListener("change", taskStatusChangeHandler)
+pageContentEl.addEventListener("change", taskStatusChangeHandler);  
