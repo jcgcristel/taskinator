@@ -113,11 +113,9 @@ var taskFormHandler = function() {
 
 // button actions in tasks
 var taskButtonHandler = function(event) {
-    console.log(event.target);
-
     // delete button
     if (event.target.matches(".delete-btn")) {
-        // get element id
+        // get id of task
         var taskID = event.target.getAttribute("task-id");
         deleteTask(taskID);
     }
@@ -125,7 +123,8 @@ var taskButtonHandler = function(event) {
 
 // delete task
 var deleteTask = function(taskID) {
-    console.log(taskID);
+    var taskSelected = document.querySelector(`.task-item[task-id="${taskID}"]`)
+    taskSelected.remove();
 }
 
 // listeners
