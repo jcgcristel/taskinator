@@ -1,16 +1,19 @@
-// button varsiables
-var btnE1 = window.document.querySelector("#save-task");
+// form variable
+var formEl = document.querySelector("#task-form");
 
 // list variables
-var taskToDoE1 = document.querySelector("#tasks-to-do");
+var taskToDoEl = document.querySelector("#tasks-to-do");
 
 // create list item
 var createTaskHandler = function() {
-    var taskItemE1 = document.createElement("li");
-    taskItemE1.className = "task-item";
-    taskItemE1.textContent = "This is a new task.";
-    taskToDoE1.appendChild(taskItemE1);
+
+    event.preventDefault();
+
+    var taskItemEl = document.createElement("li");
+    taskItemEl.className = "task-item";
+    taskItemEl.textContent = "This is a new task.";
+    taskToDoEl.appendChild(taskItemEl);
 }
 
-// main
-btnE1.addEventListener("click", createTaskHandler);
+// listeners
+formEl.addEventListener("submit", createTaskHandler);
