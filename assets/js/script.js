@@ -100,14 +100,26 @@ var taskFormHandler = function() {
         alert("Please fill out task form.");
         return;
     }
-        
-    // package data as an obj
-    var taskDataObj = {
-        name: taskNameInput,
-        type: taskTypeInput
-    }
+
+    // checks if form is in edit mode
+    var isEdit = formEl.hasAttribute("task-id");
     
-    createTaskEl(taskDataObj);
+    // edits task if it is in edit mode
+    if (isEdit) {
+        var taskID = formEl.getAttribute("task-id");
+        completeEditTask(taskNameInput, taskTypeInput, taskID);
+    }
+    // creates new task if not in edit mode
+    else {        
+        // package data as an obj
+        var taskDataObj = {
+            name: taskNameInput,
+            type: taskTypeInput
+        }
+        
+        createTaskEl(taskDataObj);
+    }
+
     formEl.reset();
 }
 
@@ -151,11 +163,28 @@ var editTask = function(taskID) {
     formEl.setAttribute("task-id", taskID);
 }
 
+// complete edit task
+var completeEditTask = function(taskName, taskType, taskID) {
+    // get matching task
+    var taskSelected = document.querySelector(`.task-item[task-id="${taskID}"]`);
+
+    // set new values
+    taskSelected.querySelector("h3.task-name").textContent = taskName;
+    taskSelected.querySelector("span.task-type").textContent = taskType;
+
+    alert("Task updated.");
+
+    // turn off edit mode
+    formEl.removeAttribute("task-id");
+    document.querySelector("#save-task").textContent = "Add Task";
+}
+
 // delete task
 var deleteTask = function(taskID) {
     var taskSelected = document.querySelector(`.task-item[task-id="${taskID}"]`)
     taskSelected.remove();
 }
+
 
 // listeners
 formEl.addEventListener("submit", taskFormHandler);
