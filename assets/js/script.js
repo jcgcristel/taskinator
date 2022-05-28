@@ -258,10 +258,31 @@ var taskStatusChangeHandler = function(event) {
     saveTasks();
 }
 
-// saves tasks to localStorage
+// saves tasks to local
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
+// load tasks from local
+var loadTasks = function() {
+    // pull data keyed tasks
+    savedTasks = localStorage.getItem("tasks");
+
+    // checks if storage is empty
+    if (savedTasks === null){
+        tasks = [];
+        return false;
+    }
+
+    // convert pulled data into an obj
+    savedTasks = JSON.parse(tasks);
+
+    for (var i = 0; i < tasks.length; i++) {
+        createTaskEl(savedTasks[i]);
+    }
+}
+
+loadTasks();
 
 // listeners
 formEl.addEventListener("submit", taskFormHandler);
