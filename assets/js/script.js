@@ -270,12 +270,13 @@ var loadTasks = function() {
 
     // checks if storage is empty
     if (savedTasks === null){
-        tasks = [];
+        savedTasks = [];
         return false;
     }
 
     // convert pulled data into an obj
-    savedTasks = JSON.parse(tasks);
+    savedTasks = JSON.parse(savedTasks);
+    tasks = savedTasks;
 
     for (var i = 0; i < tasks.length; i++) {
         createTaskEl(savedTasks[i]);
